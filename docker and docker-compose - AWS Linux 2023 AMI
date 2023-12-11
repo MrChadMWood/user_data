@@ -1,0 +1,22 @@
+#!/bin/bash
+
+# Update system packages
+sudo yum update
+
+# Install Docker
+sudo yum install docker -y
+
+# Add the ec2-user to the docker group
+sudo usermod -a -G docker ec2-user
+
+# Switch to the docker group
+newgrp docker
+
+# Download and install Docker Compose
+wget https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)
+sudo mv docker-compose-$(uname -s)-$(uname -m) /usr/local/bin/docker-compose
+sudo chmod -v +x /usr/local/bin/docker-compose
+
+# Enable and start the Docker service
+sudo systemctl enable docker.service
+sudo systemctl start docker.service
