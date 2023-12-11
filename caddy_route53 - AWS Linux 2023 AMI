@@ -25,3 +25,6 @@ xcaddy build --with github.com/caddy-dns/route53
 
 # Move Caddy to the system binaries directory
 sudo mv caddy /usr/local/bin
+
+# Allow low port listening
+sudo setcap CAP_NET_BIND_SERVICE=+eip $(which caddy)
