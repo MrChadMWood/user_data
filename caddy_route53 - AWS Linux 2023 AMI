@@ -1,0 +1,27 @@
+#!/bin/bash
+
+# Update and upgrade system packages
+sudo yum update
+sudo yum upgrade
+
+# Download and extract Go
+wget https://go.dev/dl/go1.21.5.linux-amd64.tar.gz
+tar -xvf go1.21.5.linux-amd64.tar.gz
+
+# Move Go to the system directory
+sudo mv go /usr/local
+
+# Set up Go environment variables
+echo 'export GOROOT=/usr/local/go' >> ~/.bashrc
+echo 'export GOPATH=$HOME/go' >> ~/.bashrc
+echo 'export PATH=$PATH:$GOROOT/bin:$GOPATH/bin' >> ~/.bashrc
+source ~/.bashrc
+
+# Install xcaddy
+go install github.com/caddyserver/xcaddy/cmd/xcaddy@latest
+
+# Build Caddy with Route 53 DNS plugin
+xcaddy build --with github.com/caddy-dns/route53
+
+# Move Caddy to the system binaries directory
+sudo mv caddy /usr/local/bin
